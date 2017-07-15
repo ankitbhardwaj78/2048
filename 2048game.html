@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+	<div class="container">
+		<div  class="header">
+			<h1>2048</h1>
+			<h2>Score:</h2>
+			<div id="score">
+			</div>
+
+		</div>
+		<div class="Introduction">
+			<h3>Play 2048 Game</h3>
+			<p>
+				Join the numbers and get to the 2048 tile!
+			</p>
+			<button id="newgame" onclick="reset()">new game</button>
+		</div>
+		<div id="outer">
+
+			<div class="firstrow">
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+			</div>
+			<div class="firstrow">
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+			</div>
+			<div class="firstrow">
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+			</div>
+			<div class="firstrow">
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+				<div class="firstcolumn">
+				</div>
+			</div>
+		</div>
+		<h6>
+			HOW TO PLAY: Use your arrow keys to move the tiles. When two tiles with the same number touch, they merge into one!
+		</h6>
+	</div>
+</body>
+</html>
+<style type="text/css">
+	*{
+		padding: 0;
+		margin: 0;
+	}
+	body{
+		background-color: #FAF8EE;
+	}
+	.container{
+		width: 550px;
+		margin: auto;
+		margin-top: 30px;
+	}
+	h1{
+		font-size: 80px;
+		color: grey;
+	}
+	h2{
+		font-size: 40px;
+	}
+	h3{
+		font-size: 20px;
+	}
+	p{
+		font-size: 30px;
+	}
+	h6{
+		margin-top: 10px;
+		font-size: 20px;
+		font-family: sans-serif;
+		color:red;
+	}
+	button{
+		margin-top: 5px;
+		height: 70px;
+		width: 200px;
+		color:white;
+		border-radius: 5px;
+		background-color:#bbada0; 
+		text-align: center;
+		font-size: 30px;
+	}
+	.header{
+		display: flex;
+		margin: auto;
+		text-align: center;
+		justify-content: space-around;
+	}
+	#outer{
+		background-color: #bbada0;
+		height: 550px;
+		width: 550px;
+		margin: auto;
+		margin-top: 30px;
+		border-radius: 10px;
+		
+	}
+	.firstrow{
+		height: 23%;
+		width: 100%;
+		padding-top: 5px;
+		padding-left: 5px;
+		padding-right: 5px;
+		padding-bottom: 5px; 
+		display: flex;
+	}
+	#score{
+		margin-top: 5px;
+		height: 70px;
+		width: 200px;
+		color:white;
+		border-radius: 5px;
+		background-color:#bbada0; 
+		text-align: center;
+		font-size: 50px;
+	}
+	.firstcolumn{
+		width: 22%;
+		background-color: #CDC1B3;
+		margin-left: 7px;
+		margin-right: 7px;
+		font-size: 60px;
+		text-align: center;
+		border-radius: 3px;
+	}
+</style>
+<script type="text/javascript">
+
+	var score=0;
+	var scorecard=document.getElementById('score');
+	var column=document.getElementsByClassName('firstcolumn');
+	var container=document.getElementById('outer');
+
+
+	scorecard.innerText=score;
+	var color=[];
+	color[0]="#CDC1B3";
+	color[2]="#EEE4D6";
+	color[4]="#ede0c8";
+	color[8]="#f2b179";
+	color[16]="#f59563";
+	color[32]="#f67c5f";
+	color[64]="#F65E39";
+	color[128]="#EDCF70";
+	color[256]="#EDCC5F";
+	color[512]="#edc850";
+    color[1024]="#7986cb";
+    color[2048]="#3f51b5";
+    color[4096]="#1a237e";
+
+
+	var randomnumber=Math.randomnumber*10>8?4:2;
+
+	var number
+
+
+
+//new game
+
+function reset(){
+	for(var i=0;i<column.length;i++)
+	{
+		var temp=column[i];
+		temp.innerText="";
+		temp.style['background-color']=color[0];
+	}
+	score=0;
+	console.log(container);
+	container.style.opacity=1;
+	document.body.style['background-image']="";
+	scorecard.innerText=score;
+	continuation();
+}
+
+
+
+
+// to check the status of the game
+
+function ending(){
+	var flag=0;
+	for(var i=0;i<column.length;i++)
+	{
+		var temp=column[i];
+		if(temp.innerText=="")
+		{
+			flag=1;
+			break;
+		}
+	}
+	if(flag==0)
+	{
+		for(var i=0;i<4;i++)
+		{
+			var k=i;
+			for(var j=0;j<3;j++)
+			{
+				var current=column[k];
+				var next=column[k+4];
+				if(current.innerText==next.innerText)
+				{
+					console.log("hello");
+					flag=1;
+					break;
+				}
+				k=k+4;
+			}
+		}  
+	}
+	if(flag==0)
+	{
+		for(var i=0;i<4;i++)
+		{
+			var k=i;
+			for(var j=i*4;j<i*4+3;j++)
+			{
+				var current=column[j];
+				var next=column[j+1];
+				if(current.innerText==next.innerText)
+				{
+					console.log("yellow");
+					flag=1;
+					break;
+				}
+			}
+		}  
+	}
+	if(flag==0)
+	{
+		container.style.opacity=0.8;
+		document.body.style['background-image']="url(images/gameover.jpg)";
+	}
+}
+
+
+
+
+//to generate random number on the div
+
+
+function continuation(){
+	var variable=parseInt(Math.random(0)*column.length);
+	var temp=column[variable];
+	console.log(temp);
+	if(temp.innerText=="")
+	{
+		var value=randomnumber;
+		temp.style['background-color']=color[value];
+		temp.innerText=value;
+	}
+	else{
+		while(temp.innerText!="")
+		{
+			var variable=parseInt(Math.random(0)*column.length);
+			var temp=column[variable];
+			if(temp.innerText=="")
+			{
+				
+				var value=randomnumber;
+				temp.style['background-color']=color[value];
+				temp.innerText=value;
+				break;
+			}
+		}
+	}
+}
+
+
+
+
+
+
+function start(event){
+
+
+	var nochange=true;
+
+	if(event.key=='ArrowLeft')
+	{
+
+		for(var i=0;i<4;i++)
+		{
+			var array=new Int32Array(4);
+			var k=0;
+			for(var j=i*4;j<i*4+4;j++)
+			{
+				var temp=column[j];
+				array[k]=parseInt(temp.innerText);
+				k=k+1;
+			}
+
+			for(var l=0;l<4;l++)
+			{
+				if(array[l]==0)
+				{
+					var inner=l+1;
+					while(inner<4)
+					{
+						if(array[inner]!=0)
+						{
+							array[l]=array[inner];
+							array[inner]=0;
+							nochange=false;
+							break;
+						}
+						inner=inner+1;
+					}
+					if(inner==0)
+					{
+						break;
+					}
+				}
+			}
+
+			for(var l=0;l<3;l++)
+			{
+				if(array[l]==array[l+1]&&array[l]!=0&&array[l+1]!=0)
+				{
+					array[l]=array[l]+array[l+1];
+					score=score+array[l];
+					scorecard.innerText=score;
+					array[l+1]=0;
+					nochange=false;
+					for(var j=l+1;j<3;j++)
+					{
+						array[j]=array[j+1];
+					}
+				}
+			}
+
+
+			var k=0;
+			for(var j=i*4;j<i*4+4;j++)
+			{
+				var temp=column[j];
+				if(array[k]!=0)
+					temp.innerText=array[k];
+				else
+					temp.innerText="";
+				if(temp.innerText=="")
+					temp.style['background-color']=color[0];
+				else
+					temp.style['background-color']=color[array[k]];
+				k=k+1;
+			}
+			for(var l=0;l<4;l++)
+			{
+				array[l]=0;
+			}
+
+		}
+		if(!nochange)
+		{
+			continuation();
+		}
+		ending();
+
+	}
+
+
+
+
+
+	if(event.key=='ArrowRight')
+	{
+
+		for(var i=0;i<4;i++)
+		{
+			var array=new Int32Array(4);
+			var k=0;
+			for(var j=i*4;j<i*4+4;j++)
+			{
+				var temp=column[j];
+				array[k]=parseInt(temp.innerText);
+				k=k+1;
+			}
+
+			for(var l=3;l>=0;l--)
+			{
+				if(array[l]==0)
+				{
+					var inner=l-1;
+					while(inner>=0)
+					{
+						if(array[inner]!=0)
+						{
+							array[l]=array[inner];
+							array[inner]=0;
+							nochange=false;
+							break;
+						}
+						inner=inner-1;
+					}
+					if(inner==0)
+					{
+						break;
+					}
+				}
+			}
+
+			for(var l=3;l>0;l--)
+			{
+				if(array[l]==array[l-1]&&array[l]!=0&&array[l-1]!=0)
+				{
+					array[l]=array[l]+array[l-1];
+					score=score+array[l];
+					nochange=false;
+					scorecard.innerText=score;
+					array[l-1]=0;
+					for(var j=l-1;j>0;j--)
+					{
+						array[j]=array[j-1];
+					}
+				}
+			}
+
+			var k=0;
+			for(var j=i*4;j<i*4+4;j++)
+			{
+				var temp=column[j];
+				if(array[k]!=0)
+					temp.innerText=array[k];
+				else
+					temp.innerText="";
+				if(temp.innerText=="")
+					temp.style['background-color']=color[0];
+				else
+					temp.style['background-color']=color[array[k]];
+				k=k+1;
+			}
+			for(var l=0;l<4;l++)
+			{
+				array[l]=0;
+			}
+
+		}
+		if(!nochange)
+		{
+			continuation();
+		}
+		ending();
+
+	}
+
+
+
+
+	if(event.key=='ArrowDown')
+	{
+		for(var i=0;i<4;i++)
+		{
+			var array=new Int32Array(4);
+			var k=0;
+			for(var j=i;j<=15;j=j+4)
+			{
+				var temp=column[j];
+				array[k]=parseInt(temp.innerText);
+				k=k+1;
+			}
+
+			for(var l=3;l>=0;l--)
+			{
+				if(array[l]==0)
+				{
+					var inner=l-1;
+					while(inner>=0)
+					{
+						if(array[inner]!=0)
+						{
+							nochange=false;
+							array[l]=array[inner];
+							array[inner]=0;
+							break;
+						}
+						inner=inner-1;
+					}
+					if(inner==0)
+					{
+						break;
+					}
+				}
+			}
+
+			for(var l=3;l>0;l--)
+			{
+				if(array[l]==array[l-1]&&array[l]!=0&&array[l-1]!=0)
+				{
+					array[l]=array[l]+array[l-1];
+					score=score+array[l];
+					nochange=false;
+					scorecard.innerText=score;
+					array[l-1]=0;
+					for(var j=l-1;j>0;j--)
+					{
+						array[j]=array[j-1];
+					}
+				}
+			}
+
+			var k=0;
+			for(var j=i;j<=15;j=j+4)
+			{
+				var temp=column[j];
+				if(array[k]!=0)
+					temp.innerText=array[k];
+				else
+					temp.innerText="";
+				if(temp.innerText=="")
+					temp.style['background-color']=color[0];
+				else
+					temp.style['background-color']=color[array[k]];
+				k=k+1;
+			}
+			for(var l=0;l<4;l++)
+			{
+				array[l]=0;
+			}
+
+		}
+		if(nochange==false)
+		{
+			continuation();
+		}
+		ending();
+	}
+
+
+
+
+
+
+
+
+
+	if(event.key=='ArrowUp')
+	{
+		for(var i=0;i<4;i++)
+		{
+			var array=new Int32Array(4);
+			var k=0;
+			for(var j=i;j<=15;j=j+4)
+			{
+				var temp=column[j];
+				array[k]=parseInt(temp.innerText);
+				k=k+1;
+			}
+			for(var l=0;l<4;l++)
+			{
+				if(array[l]==0)
+				{
+					var inner=l+1;
+					while(inner<4)
+					{
+						if(array[inner]!=0)
+						{
+							nochange=false;
+							array[l]=array[inner];
+							array[inner]=0;
+							break;
+						}
+						inner=inner+1;
+					}
+					if(inner==0)
+					{
+						break;
+					}
+				}
+			}
+
+			for(var l=0;l<3;l++)
+			{
+				if(array[l]==array[l+1]&&array[l]!=0&&array[l+1]!=0)
+				{
+					array[l]=array[l]+array[l+1];
+					score=score+array[l];
+					nochange=false;
+					scorecard.innerText=score;
+					array[l+1]=0;
+					for(var j=l+1;j<3;j++)
+					{
+						array[j]=array[j+1];
+					}
+				}
+			}
+
+
+			var k=0;
+			for(var j=i;j<=15;j=j+4)
+			{
+				var temp=column[j];
+				if(array[k]!=0)
+					temp.innerText=array[k];
+				else
+					temp.innerText="";
+				if(temp.innerText=="")
+					temp.style['background-color']=color[0];
+				else
+					temp.style['background-color']=color[array[k]];
+				k=k+1;
+			}
+			for(var l=0;l<4;l++)
+			{
+				array[l]=0;
+			}
+
+		}
+		if(!nochange)
+		{
+			continuation();
+		}
+		ending();
+	}
+
+
+
+
+
+
+}
+
+
+window.onload=continuation;
+
+document.body.addEventListener('keydown',start);
+</script>
